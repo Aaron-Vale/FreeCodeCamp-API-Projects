@@ -4,19 +4,35 @@ var app = express();
 function checkDate(date){
     date= date.toString();
     date= date.replace("%20", " ");
+    date= date.replace(",","");
     var dateArr= date.split(" ");
     var letters=dateArr[0].toLowerCase();
     if (letters != "january" && letters != "february" && letters != "march" && letters != "april" && letters != "may" && letters != "june" && letters != "july" && letters != "august" && letters != "september" && letters != "october" && letters != "november" && letters != "december"){
         return false;
     }
-    var mid=dateArr[1];
-    if (mid[0] != 0 && mid[0] != 1 && mid[0] != 2 && mid[0] != 3 && mid[0] != 4 && mid[0] != 5 && mid[0] != 6 && mid[0] != 7 && mid[0] != 8 && mid[0] != 9){
-        return false;
+    var mid=Number(dateArr[1]);
+    var end= Number(dateArr[2]);
+    if (letters==="september" || letters==="april" || letters==="june" || letters==="november"){
+        if (mid<1 || mid>30){
+            return false;
+        }
     }
-    if (mid[1] !==","){
-        return false;
+    else if (letters==="january" || letters==="march" || letters==="may" || letters==="july" || letters === "august" || letters === "october" || letters === "december"){
+        if (mid<1 || mid>31){
+            return false;
+        }
     }
-    var end= dateArr[2];
+    else if (end%4 ===0){
+        if (mid<1 || mid>29){
+            return false;
+        }
+    }
+    else{
+        if (mid<1 || mid>28){
+            return false;
+        }
+    }
+    
     var end2= end.replace(/[^0-9]/,"");
     if (end!==end2 || end.length!=4){
         return false;
@@ -88,6 +104,7 @@ app.get('/:time', function(req,res){
             rest+=natural[i];
         }
         var natural2= first+rest;
+        natural2=natural2.replace(",","");
         var arr= natural2.split(" ");
         var month=arr[0];
         switch(month){
@@ -130,7 +147,8 @@ app.get('/:time', function(req,res){
             default:
                 month="null";   
             }
-        var day= Number(arr[1].replace(",",""))-1;
+        var day= Number(arr[1]);
+        day--;
         var year= Number(arr[2]);
         var years= year-1970;
         var unix= (years*31556952000)+(month*2592000000)+(day*86400000);
