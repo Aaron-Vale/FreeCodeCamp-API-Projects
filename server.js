@@ -106,7 +106,6 @@ app.get('/:time', function(req,res){
             rest+=natural[i];
         }
         var natural2= first+rest;
-        natural2=natural2.replace(",","");
         var arr= natural2.split(" ");
         var month=arr[0];
         switch(month){
@@ -149,7 +148,7 @@ app.get('/:time', function(req,res){
             default:
                 month="null";   
             }
-        var day= Number(arr[1]);
+        var day= Number(arr[1].replace(",",""));
         day--;
         var year= Number(arr[2]);
         var years= year-1970;
