@@ -11,7 +11,12 @@ function checkDate(date){
         return false;
     }
     var mid=Number(dateArr[1]);
-    var end= Number(dateArr[2]);
+    var end= dateArr[2];
+    var end2= end.replace(/[^0-9]/,"");
+    if (end!==end2 || end.length!=4){
+        return false;
+    }
+    end2=Number(end2);
     if (letters==="september" || letters==="april" || letters==="june" || letters==="november"){
         if (mid<1 || mid>30){
             return false;
@@ -22,20 +27,17 @@ function checkDate(date){
             return false;
         }
     }
-    else if (end%4 ===0){
-        if (mid<1 || mid>29){
-            return false;
+    else if (letters==="february"){
+        if (end2%4 ===0){
+            if (mid<1 || mid>29){
+                return false;
+            }
         }
-    }
-    else{
-        if (mid<1 || mid>28){
-            return false;
+        else if (end2%4 !==0){
+            if (mid<1 || mid>28){
+                return false;
+            }
         }
-    }
-    
-    var end2= end.replace(/[^0-9]/,"");
-    if (end!==end2 || end.length!=4){
-        return false;
     }
     return true;   
 }
